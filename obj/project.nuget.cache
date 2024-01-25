@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Kvp59yUHpDG9pucYQVtE9cg8Z1+PmJhV/p2Za/05S7OycmULuGGZjN+RqQaBoMQV13+gZ2BP7T5d4dxFwEaRJw==",
+  "dgSpecHash": "DS4qpFOSExYK7l5A3LjzA9DZv1fRwe2zkozQ53R8xKBnc6oQrEYQuTROSrldFqpDqYHAhvkH3HhCPPY/qc698g==",
   "success": true,
   "projectFilePath": "C:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\demo\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\demo\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\demo\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\demo\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\demo\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.15\\microsoft.aspnetcore.authentication.jwtbearer.7.0.15.nupkg.sha512",
     "C:\\Users\\demo\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.13\\microsoft.aspnetcore.openapi.7.0.13.nupkg.sha512",
