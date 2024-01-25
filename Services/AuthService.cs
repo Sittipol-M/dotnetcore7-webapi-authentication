@@ -9,7 +9,6 @@ using dotnetcore7_webapi_authentication.Requests;
 using dotnetcore7_webapi_authentication.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualBasic;
 
 namespace dotnetcore7_webapi_authentication.Services
 {
@@ -17,6 +16,7 @@ namespace dotnetcore7_webapi_authentication.Services
     {
         public Task<LoginResponse> Login(LoginBodyRequest bodyRequest);
         public Task Register(RegisterBodyRequest bodyRequest);
+        public Task<RefreshAccessTokenBodyResponse> RefreshAccessToken(RefreshAccessTokenBodyRequest bodyRequest);
     }
     public class AuthService : IAuthService
     {
@@ -34,7 +34,7 @@ namespace dotnetcore7_webapi_authentication.Services
                 new(ClaimTypes.Name,user.Username),
                 new(ClaimTypes.Role,user.Role)
             };
-             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 claims: claims,
@@ -55,7 +55,7 @@ namespace dotnetcore7_webapi_authentication.Services
         public async Task<LoginResponse> Login(LoginBodyRequest bodyRequest)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username.Equals(bodyRequest.Username));
-             if (user is null)
+            if (user is null)
             {
                 throw new Exception("invalid username");
             }
@@ -95,6 +95,53 @@ namespace dotnetcore7_webapi_authentication.Services
             };
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<RefreshAccessTokenBodyResponse> RefreshAccessToken(RefreshAccessTokenBodyRequest bodyRequest)
+        {
+            if (bodyRequest.AccessToken is null || bodyRequest.RefreshToken is null)
+            {
+                throw new Exception("not enough tokens");
+            }
+
+
+            SecurityToken validatedToken;
+            TokenValidationParameters validationParameters = new TokenValidationParameters()
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"])),
+                ValidateLifetime = false
+            };
+            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(bodyRequest.AccessToken, validationParameters, out validatedToken);
+
+            string? username = principal?.Identity?.Name;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username.Equals(username));
+            if (user is null)
+            {
+                throw new Exception("invalid access token ");
+            }
+            if (!bodyRequest.RefreshToken.Equals(user.RefreshToken))
+            {
+                throw new Exception("invalid refresh token");
+            }
+
+            var newAccessToken = GenerateAccessToken(user);
+            var newRefreshToken = GenerateRefreshToken();
+
+            user.RefreshToken = newRefreshToken;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            var response = new RefreshAccessTokenBodyResponse()
+            {
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken
+            };
+
+            return response;
         }
     }
 }

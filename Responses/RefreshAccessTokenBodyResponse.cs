@@ -1,6 +1,7 @@
-namespace dotnetcore7_webapi_authentication.Requests
+
+namespace dotnetcore7_webapi_authentication.Responses
 {
-    public class RefreshAccessTokenBodyRequest
+    public class RefreshAccessTokenBodyResponse
     {
         public required string AccessToken { get; set; }
         public required string RefreshToken { get; set; }
