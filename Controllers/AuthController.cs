@@ -1,4 +1,5 @@
 using dotnetcore7_webapi_authentication.Requests;
+using dotnetcore7_webapi_authentication.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetcore7_webapi_authentication.Controllers
@@ -7,6 +8,11 @@ namespace dotnetcore7_webapi_authentication.Controllers
     [Route("authen")]
     public class AuthController : ControllerBase
     {
+        private readonly IAuthService _authService;
+        public AuthController(IAuthService authService)
+        {
+            _authService = authService;
+        }
         [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterBodyRequest bodyRequest)
         {

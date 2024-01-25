@@ -11,4 +11,19 @@ public partial class User
 {
     [Key]
     public int Id { get; set; }
+
+    [Column("username")]
+    [StringLength(50)]
+    [Unicode(false)]
+    public string Username { get; set; } = null!;
+
+    [Column("password")]
+    [StringLength(250)]
+    [Unicode(false)]
+    public string Password { get; set; } = null!;
+
+    [Column("refresh_token")]
+    [StringLength(250)]
+    [Unicode(false)]
+    public string? RefreshToken { get; set; }
 }
