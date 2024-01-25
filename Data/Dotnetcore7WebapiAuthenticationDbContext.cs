@@ -30,11 +30,6 @@ public partial class Dotnetcore7WebapiAuthenticationDbContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
-        modelBuilder.Entity<User>(entity =>
-        {
-            entity.Property(e => e.Id).ValueGeneratedNever();
-        });
-
         OnModelCreatingPartial(modelBuilder);
     }
 

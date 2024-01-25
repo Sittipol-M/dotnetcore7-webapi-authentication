@@ -14,9 +14,9 @@ namespace dotnetcore7_webapi_authentication.Controllers
             _authService = authService;
         }
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterBodyRequest bodyRequest)
+        public async Task<IActionResult> Register([FromBody] RegisterBodyRequest bodyRequest)
         {
-            _authService.Register(bodyRequest);
+            await _authService.Register(bodyRequest);
             return Ok();
         }
         [HttpPost("login")]
