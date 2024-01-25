@@ -1,3 +1,5 @@
+using dotnetcore7_webapi_authentication.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetcore7_webapi_authentication.Controllers
@@ -6,10 +8,17 @@ namespace dotnetcore7_webapi_authentication.Controllers
     [Route("customers")]
     public class CustomerController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetAll()
+        private readonly ICustomerService _customerService;
+        public CustomerController(ICustomerService customerService)
         {
-            return Ok();
+            _customerService = customerService;
+        }
+        [HttpGet]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> GetAll()
+        {
+            var customers = await _customerService.GetAll();
+            return Ok(customers);
         }
     }
 }

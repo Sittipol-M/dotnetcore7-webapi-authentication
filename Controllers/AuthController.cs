@@ -25,7 +25,7 @@ namespace dotnetcore7_webapi_authentication.Controllers
             var response = await _authService.Login(bodyRequest);
             return Ok(response);
         }
-        [HttpPost("refreshAccessToken")]
+        [HttpPost("refresh-access-token")]
         public IActionResult RefreshAccessToken([FromBody] RefreshAccessTokenBodyRequest bodyRequest)
         {
             return Ok();

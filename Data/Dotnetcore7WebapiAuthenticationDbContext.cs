@@ -25,11 +25,6 @@ public partial class Dotnetcore7WebapiAuthenticationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Customer>(entity =>
-        {
-            entity.Property(e => e.Id).ValueGeneratedNever();
-        });
-
         OnModelCreatingPartial(modelBuilder);
     }
 

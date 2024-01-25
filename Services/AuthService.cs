@@ -81,8 +81,6 @@ namespace dotnetcore7_webapi_authentication.Services
             return response;
         }
 
-
-
         public async Task Register(RegisterBodyRequest bodyRequest)
         {
             if (!bodyRequest.Password.Equals(bodyRequest.ConfirmPassword))
