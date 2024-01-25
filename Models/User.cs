@@ -26,4 +26,8 @@ public partial class User
     [StringLength(250)]
     [Unicode(false)]
     public string? RefreshToken { get; set; }
+
+    [StringLength(50)]
+    [Unicode(false)]
+    public string? Role { get; set; }
 }

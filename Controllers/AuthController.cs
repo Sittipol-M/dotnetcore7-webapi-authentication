@@ -20,9 +20,10 @@ namespace dotnetcore7_webapi_authentication.Controllers
             return Ok();
         }
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginBodyRequest bodyRequest)
+        public async Task<IActionResult> Login([FromBody] LoginBodyRequest bodyRequest)
         {
-            return Ok();
+            var response = await _authService.Login(bodyRequest);
+            return Ok(response);
         }
         [HttpPost("refreshAccessToken")]
         public IActionResult RefreshAccessToken([FromBody] RefreshAccessTokenBodyRequest bodyRequest)
