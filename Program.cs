@@ -9,6 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("cors1", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+    });
+});
+
 builder.Services.AddDbContext<Dotnetcore7WebapiAuthenticationDbContext>();
 builder.Services.AddAuthentication().AddJwtBearer(options =>
  options.TokenValidationParameters = new TokenValidationParameters
@@ -35,6 +43,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("cors1");
 
 app.UseAuthorization();
 

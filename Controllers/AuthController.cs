@@ -23,12 +23,20 @@ namespace dotnetcore7_webapi_authentication.Controllers
         public async Task<IActionResult> Login([FromBody] LoginBodyRequest bodyRequest)
         {
             var response = await _authService.Login(bodyRequest);
+            Response.Cookies.Append("refresh-token", response.RefreshToken, new CookieOptions()
+            {
+                HttpOnly = true
+            });
             return Ok(response);
         }
         [HttpPost("refresh-access-token")]
         public async Task<IActionResult> RefreshAccessToken([FromBody] RefreshAccessTokenBodyRequest bodyRequest)
         {
             var response = await _authService.RefreshAccessToken(bodyRequest);
+            Response.Cookies.Append("refresh-token", response.RefreshToken, new CookieOptions()
+            {
+                HttpOnly = true
+            });
             return Ok(response);
         }
     }

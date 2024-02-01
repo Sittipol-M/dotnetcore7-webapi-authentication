@@ -2,13 +2,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using BCrypt.Net;
 using dotnetcore7_webapi_authentication.Data;
-using dotnetcore7_webapi_authentication.Models;
 using dotnetcore7_webapi_authentication.Requests;
 using dotnetcore7_webapi_authentication.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using User = dotnetcore7_webapi_authentication.Models.User;
 
 namespace dotnetcore7_webapi_authentication.Services
 {
@@ -45,12 +44,21 @@ namespace dotnetcore7_webapi_authentication.Services
             return accessToken;
         }
 
-        private static string GenerateRefreshToken()
+        private string GenerateRefreshToken(User user)
         {
-            var randomNumber = new byte[64];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
+            var claims = new List<Claim>{
+                new(ClaimTypes.Name,user.Username),
+                new(ClaimTypes.Role,user.Role)
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(1),
+                signingCredentials: credentials
+            );
+            var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
+            return accessToken;
         }
         public async Task<LoginResponse> Login(LoginBodyRequest bodyRequest)
         {
@@ -67,7 +75,7 @@ namespace dotnetcore7_webapi_authentication.Services
             }
 
             var accessToken = GenerateAccessToken(user);
-            var refreshToken = GenerateRefreshToken();
+            var refreshToken = GenerateRefreshToken(user);
 
             user.RefreshToken = refreshToken;
             _context.Users.Update(user);
@@ -76,7 +84,9 @@ namespace dotnetcore7_webapi_authentication.Services
             var response = new LoginResponse()
             {
                 AccessToken = accessToken,
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken,
+                User = new() { Username = bodyRequest.Username },
+                Role = user.Role
             };
             return response;
         }
@@ -99,14 +109,12 @@ namespace dotnetcore7_webapi_authentication.Services
 
         public async Task<RefreshAccessTokenBodyResponse> RefreshAccessToken(RefreshAccessTokenBodyRequest bodyRequest)
         {
-            if (bodyRequest.AccessToken is null || bodyRequest.RefreshToken is null)
+            if (bodyRequest.RefreshToken is null)
             {
                 throw new Exception("not enough tokens");
             }
 
-
-            SecurityToken validatedToken;
-            TokenValidationParameters validationParameters = new TokenValidationParameters()
+            TokenValidationParameters validationParameters = new()
             {
                 ValidateAudience = false,
                 ValidateIssuer = false,
@@ -114,7 +122,7 @@ namespace dotnetcore7_webapi_authentication.Services
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"])),
                 ValidateLifetime = false
             };
-            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(bodyRequest.AccessToken, validationParameters, out validatedToken);
+            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(bodyRequest.RefreshToken, validationParameters, out SecurityToken validatedToken);
 
             string? username = principal?.Identity?.Name;
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username.Equals(username));
@@ -128,7 +136,7 @@ namespace dotnetcore7_webapi_authentication.Services
             }
 
             var newAccessToken = GenerateAccessToken(user);
-            var newRefreshToken = GenerateRefreshToken();
+            var newRefreshToken = GenerateRefreshToken(user);
 
             user.RefreshToken = newRefreshToken;
 

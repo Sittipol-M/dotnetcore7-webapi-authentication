@@ -23,11 +23,11 @@ public partial class User
     public string Password { get; set; } = null!;
 
     [Column("refresh_token")]
-    [StringLength(250)]
+    [StringLength(500)]
     [Unicode(false)]
     public string? RefreshToken { get; set; }
 
     [StringLength(50)]
     [Unicode(false)]
-    public string? Role { get; set; }
+    public string Role { get; set; } = null!;
 }
