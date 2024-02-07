@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj": {}
+    "C:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj": {}
   },
   "projects": {
-    "c:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj": {
+    "C:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj",
+        "projectUniqueName": "C:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj",
         "projectName": "dotnetcore7-webapi-authentication",
-        "projectPath": "c:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj",
+        "projectPath": "C:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj",
         "packagesPath": "C:\\Users\\demo\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\obj\\",
+        "outputPath": "C:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\demo\\AppData\\Roaming\\NuGet\\NuGet.Config",

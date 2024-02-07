@@ -64,6 +64,8 @@ app.UseCors("cors1");
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+
 app.MapControllers();
 
 app.Run();

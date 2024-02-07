@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "oJXbdvdNQfgiB9jr8PApmdSj1z5CUg91BX2luyHk/K2Bs34fpGR5t18F+omUYspRkMb0yAugf7QH1DR9jBokog==",
+  "dgSpecHash": "DS4qpFOSExYK7l5A3LjzA9DZv1fRwe2zkozQ53R8xKBnc6oQrEYQuTROSrldFqpDqYHAhvkH3HhCPPY/qc698g==",
   "success": true,
-  "projectFilePath": "c:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj",
+  "projectFilePath": "C:\\Users\\demo\\Desktop\\my projects\\dotnetcore7-webapi-authentication\\dotnetcore7-webapi-authentication.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\demo\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\demo\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
