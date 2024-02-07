@@ -25,24 +25,17 @@ namespace dotnetcore7_webapi_authentication.Controllers
             var response = await _authService.Login(bodyRequest);
             Response.Cookies.Append("refresh-token", response.RefreshToken, new CookieOptions()
             {
-                HttpOnly = true
-            });
-            Response.Cookies.Append("access-token", response.AccessToken, new CookieOptions()
-            {
-                HttpOnly = true
+                HttpOnly = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(1)
             });
             return Ok(response);
         }
         [HttpPost("refresh-access-token")]
-        public async Task<IActionResult> RefreshAccessToken()
+        public async Task<IActionResult> RefreshAccessToken([FromBody] RefreshAccessTokenBodyRequest bodyRequest)
         {
             var refreshToken = Request.Cookies["refresh-token"];
-            var accessToken = Request.Cookies["access-token"];
-            var response = await _authService.RefreshAccessToken(accessToken, refreshToken);
-            Response.Cookies.Append("access-token", response.AccessToken, new CookieOptions()
-            {
-                HttpOnly = true
-            });
+            var response = await _authService.RefreshAccessToken(bodyRequest.AccessToken, refreshToken);
             Response.Cookies.Append("refresh-token", response.RefreshToken, new CookieOptions()
             {
                 HttpOnly = true

@@ -68,7 +68,7 @@ namespace dotnetcore7_webapi_authentication.Services
             var refreshToken = GenerateRefreshToken();
 
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpireAt = DateTime.UtcNow.AddMinutes(2);
+            user.RefreshTokenExpireAt = DateTime.UtcNow.AddDays(1);
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
@@ -143,7 +143,6 @@ namespace dotnetcore7_webapi_authentication.Services
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken,
                 User = new() { Username = user.Username, Role = user.Role },
-                Role = user.Role
             };
 
             return response;

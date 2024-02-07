@@ -14,7 +14,7 @@ namespace dotnetcore7_webapi_authentication.Controllers
             _customerService = customerService;
         }
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var customers = await _customerService.GetAll();
